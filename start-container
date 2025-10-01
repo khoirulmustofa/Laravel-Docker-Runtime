@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+
+# runtime dirs
+mkdir -p /run/nginx /run/php /var/log/nginx /var/log/php-fpm
+chown -R www-data:www-data /run/nginx /run/php /var/log/nginx /var/log/php-fpm || true
+
+# kalau ini proyek Laravel, bereskan permission
+if [ -f "/var/www/html/artisan" ]; then
+  echo "[entrypoint] Laravel detected: fixing perms..."
+  chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache || true
+  chmod -R ug+rwx /var/www/html/storage /var/www/html/bootstrap/cache || true
+
+  # Optional cache (aktifkan di deploy immutable)
+  # su -s /bin/sh -c "php artisan config:cache || true" www-data
+  # su -s /bin/sh -c "php artisan route:cache  || true" www-data
+  # su -s /bin/sh -c "php artisan view:cache   || true" www-data
+fi
+
+exec "$@"
