@@ -1,6 +1,6 @@
 FROM ubuntu:24.04
 
-LABEL maintainer="Taylor Otwell"
+LABEL maintainer="Form Taylor Otwell"
 
 ARG WWWGROUP=33            # 33 adalah grup www-data di Debian/Ubuntu
 ARG NODE_VERSION=22
